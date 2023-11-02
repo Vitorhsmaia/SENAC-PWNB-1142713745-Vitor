@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Cadastro de Clientes</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+
+  <div class="form-container">
+    <h2>Cadastro de Clientes</h2>
+    <form id="customerForm" onsubmit="submitForm(event)">
+      <input type="text" id="firstName" placeholder="Nome" required><br>
+      <input type="text" id="lastName" placeholder="Sobrenome" required><br>
+      <input type="text" id="dob" placeholder="Data de Nascimento (DD/MM/AAAA)" required><br>
+      <input type="text" id="city" placeholder="Cidade" required><br>
+      <input type="text" id="cep" placeholder="CEP (XXXXX-XXX)" required><br>
+      <input type="text" id="address" placeholder="Endereço" required><br>
+      <input type="text" id="houseNumber" placeholder="Número da casa" required><br>
+      <label for="clientType">Tipo de Cliente:</label><br>
+      <div class="dropdown">
+        <button onclick="toggleDropdown()">Escolha o tipo de cliente</button>
+        <div id="dropdownOptions" class="options">
+          <input type="radio" id="gold" name="clientType" value="Ouro">
+          <label for="gold">Ouro</label>
+          <input type="radio" id="silver" name="clientType" value="Prata">
+          <label for="silver">Prata</label>
+          <input type="radio" id="bronze" name="clientType" value="Bronze">
+          <label for="bronze">Bronze</label>
+          <input type="radio" id="platinum" name="clientType" value="Platina">
+          <label for="platinum">Platina</label>
+          <input type="radio" id="diamond" name="clientType" value="Diamante">
+          <label for="diamond">Diamante</label>
+        </div>
+      </div><br>
+      <button type="submit">Incluir Cliente</button>
+      <button type="button" onclick="clearForm()">Limpar</button>
+    </form>
+  </div>
+
+  <div class="customers-list">
+    <h2>Clientes Incluídos</h2>
+    <ul id="customerList"></ul>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
+
