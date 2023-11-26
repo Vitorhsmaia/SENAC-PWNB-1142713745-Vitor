@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Cadastro</title>
+
+    <style>
+        body {
+            font-family: Arial, Arial, Helvetica, sans-serif sans-serif;
+            background-image: linear-gradient(to right, rgb(20,147,220), rgb(17,54,71));
+        }
+        .box {
+            color: white;
+            position:absolute;
+            top:50%;
+            left:50%;
+            transform: translate(-50%,-50%);
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 15px;
+            border-radius: 15px;
+            width:60%;
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid white;
+        }
+
+        th {
+            background-color: dodgerblue;
+            color: white;
+        }
+
+        td {
+            color: white;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center; /* Centraliza os botões no eixo x */
+            gap: 10px;
+            margin-top: 20px; /* Adiciona espaço acima dos botões */
+        }
+
+        .edit, .delete, .back-button {
+            background-color: #008CBA;
+            color: white;
+            border: none;
+            padding: 8px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .edit, .delete {
+            background-color: #4caf50;
+        }
+
+        .delete {
+            background-color: #f44336;
+        }
+
+        .back-button:hover, .edit:hover, .delete:hover {
+            background-color: #007aa7;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h1>Lista de Cadastro</h1>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Data de Nascimento</th>
+                    <th>CEP</th>
+                    <th>Endereço</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody id="listaClientes">
+                <!-- As linhas serão adicionadas dinamicamente aqui -->
+            </tbody>
+        </table>
+
+        <div class="action-buttons">
+            <button class="back-button" onclick="voltarParaCadastro()">Voltar</button>
+        </div>
+    </div>
+
+    <script>
+        // Esta função obtém a lista de clientes do armazenamento local e a exibe na tabela
+        function exibirListaClientes() {
+            const listaClientes = JSON.parse(localStorage.getItem('listaClientes')) || [];
+
+            const tabela = document.getElementById('listaClientes');
+
+            // Limpar a tabela antes de adicionar novas linhas
+            tabela.innerHTML = '';
+
+            listaClientes.forEach(cliente => {
+                const linha = tabela.insertRow();
+
+                const colNome = linha.insertCell(0);
+                colNome.textContent = cliente.nome;
+
+                const colDataNascimento = linha.insertCell(1);
+                colDataNascimento.textContent = cliente.dataNascimento;
+
+                const colCEP = linha.insertCell(2);
+                colCEP.textContent = cliente.cep;
+
+                const colEndereco = linha.insertCell(3);
+                colEndereco.textContent = cliente.endereco;
+
+                const colAcao = linha.insertCell(4);
+
+                // Adicionar botões de ação (excluir e editar) para cada linha
+                const btnEditar = document.createElement('button');
+                btnEditar.textContent = 'Editar';
+                btnEditar.className = 'edit';
+                btnEditar.addEventListener('click', () => editarCliente(cliente));
+
+                const btnExcluir = document.createElement('button');
+                btnExcluir.textContent = 'Excluir';
+                btnExcluir.className = 'delete';
+                btnExcluir.addEventListener('click', () => excluirCliente(cliente));
+
+                colAcao.appendChild(btnEditar);
+                colAcao.appendChild(btnExcluir);
+            });
+        }
+
+        // Função para editar um cliente (pode ser implementada conforme necessário)
+        function editarCliente(cliente) {
+            // Implemente a lógica de edição conforme necessário
+            console.log('Editar cliente:', cliente);
+        }
+
+        // Função para excluir um cliente da lista
+        function excluirCliente(cliente) {
+            const listaClientes = JSON.parse(localStorage.getItem('listaClientes')) || [];
+            const novaLista = listaClientes.filter(c => c !== cliente);
+            localStorage.setItem('listaClientes', JSON.stringify(novaLista));
+            exibirListaClientes(); // Atualizar a tabela após a exclusão
+            alert('Cliente excluído com sucesso!');
+        }
+
+        // Função para voltar para a tela de cadastro
+        function voltarParaCadastro() {
+            window.location.href = 'cadastro.html';
+        }
+
+        // Exibir a lista de clientes quando a página carregar
+        window.onload = exibirListaClientes;
+    </script>
+</body>
+</html>
+
+
+

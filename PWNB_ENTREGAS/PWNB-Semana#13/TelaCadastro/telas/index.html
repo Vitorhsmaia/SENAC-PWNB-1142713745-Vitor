@@ -1,0 +1,173 @@
+User
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Clientes</title>
+
+    <style>
+        body {
+            font-family: Arial, Arial, Helvetica, sans-serif sans-serif;
+            background-image: linear-gradient(to right, rgb(20,147,220), rgb(17,54,71));
+        }
+        .box{
+            color: white;
+            position:absolute;
+            top:50%;
+            left:50%;
+            transform: translate(-50%,-50%);
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 15px;
+            border-radius: 15px;
+            width:20%;
+
+        }
+        fieldset{
+            border: 3px solid dodgerblue;
+        }
+
+        legend{
+          border: 1px solid dodgerblue;
+          padding: 10px;
+          text-align: center;
+          background-color: dodgerblue; 
+           border-radius: 8px;
+           
+        }
+        .inputBox{
+            position: relative;
+        }
+        .inputUser{
+            background: none;
+            border: none;
+            border-bottom: 1px solid white;
+            outline: none;
+            color: white;
+            font-size: 15px;
+            width:100% ;
+            letter-spacing: 2px ;
+        }
+       
+    </style>
+  
+</head>
+<body>
+    <div class="box">
+        <form action="" onsubmit="event.preventDefault(); adicionarCliente();">
+            <fieldset>
+                <legend><b>Cadastro de Clientes</b></legend>
+                <br><br>
+                <label for="nome" class="labelInput">Nome:</label>
+                <input type="text" name="nome" id="nome" class="inputUser" required>
+                <br><br><br>
+
+                <label for="Sobrenome" class="labelInput">Sobrenome:</label>
+                <input type="text" name="sobre_nome" id="Sobrenome" class="inputUser" required>
+                <br><br><br>
+    
+                <label for="dataNascimento">Data de Nascimento:</label>
+                <input type="date" name="data_nascimento" id="dataNascimento" required>
+                <br><br><br>
+
+                <label for="cep">CEP:</label>
+                <input type="text" id="cep" pattern="\d{5}-\d{3}" placeholder="12345-678" required>
+                <br><br><br>
+
+                <label for="endereco" class="labelInput">Endereço:</label>
+                <input type="text" id="endereco" required>
+                <br><br><br>
+
+                <label for="numero" class="labelInput">Número:</label>
+                <input type="text" id="numero" required>
+                <br><br><br>
+
+                <label for="uf">UF:</label>
+                <select id="uf" required>
+                    <option value="">Selecione a UF</option>
+                    <option value="AC">Acre</option>
+                    <option value="AL">Alagoas</option>
+                    <option value="AP">Amapá</option>
+                    <option value="AM">Amazonas</option>
+                    <option value="BA">Bahia</option>
+                    <option value="CE">Ceará</option>
+                    <option value="DF">Distrito Federal</option>
+                    <option value="ES">Espírito Santo</option>
+                    <option value="GO">Goiás</option>
+                    <option value="MA">Maranhão</option>
+                    <option value="MT">Mato Grosso</option>
+                    <option value="MS">Mato Grosso do Sul</option>
+                    <option value="MG">Minas Gerais</option>
+                    <option value="PA">Pará</option>
+                    <option value="PB">Paraíba</option>
+                    <option value="PR">Paraná</option>
+                    <option value="PE">Pernambuco</option>
+                    <option value="PI">Piauí</option>
+                    <option value="RJ">Rio de Janeiro</option>
+                    <option value="RN">Rio Grande do Norte</option>
+                    <option value="RS">Rio Grande do Sul</option>
+                    <option value="RO">Rondônia</option>
+                    <option value="RR">Roraima</option>
+                    <option value="SC">Santa Catarina</option>
+                    <option value="SP">São Paulo</option>
+                    <option value="SE">Sergipe</option>
+                    <option value="TO">Tocantins</option>
+                </select>
+                <br><br>
+                <p>
+                    <button type="submit" name="cadastrar" id="cadastrar">Cadastrar</button>
+                    <button type="button" onclick="verListaClientes()">Lista de Clientes</button>
+                </p>
+            </fieldset>
+        </form>
+    </div>
+
+    <script>
+
+    function adicionarCliente() {
+        // Obter os valores dos campos
+        const nome = document.getElementById('nome').value;
+        const dataNascimento = document.getElementById('dataNascimento').value;
+        const cep = document.getElementById('cep').value;
+        const endereco = document.getElementById('endereco').value;
+        const numero = document.getElementById('numero').value;
+        const uf = document.getElementById('uf').value;
+
+        // Validar CEP usando REGEX
+        const cepRegex = /^\d{5}-\d{3}$/;
+        if (!cepRegex.test(cep)) {
+            alert('Formato de CEP inválido. Use o formato 12345-678.');
+            return;
+        }
+
+        // Criar uma linha na lista de clientes
+        const listaClientes = JSON.parse(localStorage.getItem('listaClientes')) || [];
+        const novoCliente = { nome, dataNascimento, cep, endereco, numero, uf };
+        listaClientes.push(novoCliente);
+
+        // Atualizar a lista de clientes no armazenamento local
+        localStorage.setItem('listaClientes', JSON.stringify(listaClientes));
+
+        // Exibir a lista de clientes na tela de cadastro antes de redirecionar
+        alert('Cliente adicionado com sucesso!\n\nLista de Clientes:\n\n' + formatarListaClientes(listaClientes));
+
+        // Redirecionar para a tela de lista
+        window.location.href = 'lista.html';
+    }
+
+    // Função para formatar a lista de clientes para exibição no alerta
+    function formatarListaClientes(listaClientes) {
+        return listaClientes.map(cliente => {
+            return `Nome: ${cliente.nome}, Data de Nascimento: ${cliente.dataNascimento}, CEP: ${cliente.cep}, Endereço: ${cliente.endereco}, Número: ${cliente.numero}, UF: ${cliente.uf}`;
+        }).join('\n');
+    }
+
+    function verListaClientes() {
+        window.location.href = 'lista.html';
+    }
+
+    </script>
+</body>
+</html>
+
+
